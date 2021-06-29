@@ -28,8 +28,38 @@ export const showCallingDialog = (rejectCallHandler) => {
     dialog.appendChild(callingDialog);
 }
 
-export const showInfoDialog = () => {
-    
+export const showInfoDialog = (preOfferAnswer) => {
+    let infoDialog = null;
+
+    if (preOfferAnswer === constants.preOfferAnswer.CALL_REJECTED) {
+        infoDialog = elements.getInfoDialog(
+            'Call rejected',
+            'Callee rejected your call'
+        );
+    }
+
+    if (preOfferAnswer === constants.preOfferAnswer.CALLEE_NOT_FOUND) {
+        infoDialog = elements.getInfoDialog(
+            'Call not found',
+            'Please check personal code again'
+        );
+    }
+
+    if (preOfferAnswer === constants.preOfferAnswer.CALL_UNAVAILABLE) {
+        infoDialog = elements.getInfoDialog(
+            'Call is not possible',
+            'Probably callee is busy. Please try again later'
+        );
+    }
+
+    if (infoDialog) {
+        const dialog = document.getElementById('dialog');
+        dialog.appendChild(infoDialog);
+        
+        setTimeout(() => {
+            removeAllDialogs();
+        }, [4000]);
+    }
 }
 
 export const removeAllDialogs = () => {

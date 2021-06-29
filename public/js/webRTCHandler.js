@@ -61,22 +61,21 @@ const sendPreOfferAnswer = (preOfferAnswer) => {
 
 export const handlePreOfferAnswer = (data) => {
     const { preOfferAnswer } = data;
-
     ui.removeAllDialogs();
 
     if (preOfferAnswer === constants.preOfferAnswer.CALLEE_NOT_FOUND) {
-        // show dialog that callee has not been found
+        ui.showInfoDialog(preOfferAnswer);
     }
 
     if (preOfferAnswer === constants.preOfferAnswer.CALL_UNAVAILABLE) {
-        // show dialog that callee is not able to connect
+        ui.showInfoDialog(preOfferAnswer);
     }
 
     if (preOfferAnswer === constants.preOfferAnswer.CALL_REJECTED) {
-        // show dialog that call is rejected by the callee
+        ui.showInfoDialog(preOfferAnswer);
     }
 
     if (preOfferAnswer === constants.preOfferAnswer.CALL_ACCEPTED) {
-        // send webRTC offer
+        ui.showInfoDialog(preOfferAnswer);
     }
 }

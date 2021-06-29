@@ -6,7 +6,7 @@ export const callType = {
 }
 
 export const preOfferAnswer = {
-    CALLEE_NOT_FOUND: 'CALLE_NOT_FOUND',
+    CALLEE_NOT_FOUND: 'CALLEE_NOT_FOUND',
     CALL_ACCEPTED: 'CALL_ACCEPTED',
     CALL_REJECTED: 'CALL_REJECTED',
     CALL_UNAVAILABLE: 'CALL_UNAVAILABLE'
