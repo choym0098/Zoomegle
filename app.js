@@ -17,13 +17,43 @@ let connectedPeers = [];
 
 io.on('connection', (socket) => {
     connectedPeers.push(socket.id);
-    console.log("connected peers : ", connectedPeers);
+
+    socket.on('pre-offer', (data) => {
+        const { calleePersonalCode, callType } = data;
+
+        const connectedPeer = connectedPeers.find((peerSocketId) => {
+            return peerSocketId === calleePersonalCode
+        });
+
+        if (connectedPeer) {
+            const data = {
+                callerSocketId: socket.id,
+                callType: callType,
+            };
+
+            io.to(calleePersonalCode).emit('pre-offer', data);
+        };
+    });
+
+    socket.on('pre-offer-answer', (data) => {
+        const { callerSocketId } = data;
+        console.log('pre offer answer came');
+        console.log(data);
+
+        const connectedPeer = connectedPeers.find((peerSocketId) => 
+            peerSocketId === callerSocketId
+        );
+
+        if (connectedPeer) {
+            io.to(data.callerSocketId).emit('pre-offer-answer', data);
+        }
+    })
 
     socket.on('disconnect', () => {
         console.log("user disconnected");
 
         const newConnectedPeers = connectedPeers.filter((peerSocketId) => {
-            peerSocketId !== socket.id;
+            return peerSocketId !== socket.id;
         });
 
         connectedPeers = newConnectedPeers;
