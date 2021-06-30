@@ -40,6 +40,18 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('webRTC-signaling', (data) => {
+        const { connectedUserSocketId } = data;
+        
+        const connectedPeer = connectedPeers.find((peerSocketId) => {
+            return peerSocketId === connectedUserSocketId
+        });
+        
+        if (connectedPeer) {
+            io.to(connectedUserSocketId).emit('webRTC-signaling', data);
+        }
+    })
+
     socket.on('pre-offer-answer', (data) => {
         const { callerSocketId } = data;
         console.log('pre offer answer came');
