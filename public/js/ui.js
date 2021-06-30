@@ -110,9 +110,43 @@ const showVideoCallElements = () => {
 
     const remoteVideo = document.getElementById('remote_video');
     showElement(remoteVideo);
-
+    showChatCallElements();
     // block panel
     disableDashboard();
+}
+
+// ui call buttons
+
+const micOnImgSrc = './utils/images/mic.png'
+const micOffImgSrc = './utils/images/micOff.png'
+
+export const updateMicButton = (micActive) => {
+    const micButtonImage = document.getElementById('mic_button_image');
+    micButtonImage.src = micActive ? micOffImgSrc : micOnImgSrc;
+}
+
+const cameraOnImgSrc = './utils/images/camera.png'
+const cameraOffImgSrc = './utils/images/cameraOff.png'
+
+export const updateCameraButton = (cameraActive) => {
+    const cameraButtonImage = document.getElementById('camera_button_image');
+    cameraButtonImage.src = cameraActive ? cameraOffImgSrc : cameraOnImgSrc;
+}
+
+// ui messages
+
+export const appendMessage = (message, right = false) => {
+    const messagesContainer = document.getElementById('messages_container');
+    const messageElement = right 
+        ? elements.getRightMessage(message)
+        : elements.getLeftMessage(message);
+    messagesContainer.appendChild(messageElement);
+};
+
+export const clearMessenger = () => {
+    const messageContainer = document.getElementById('messages_container');
+    messagesContainer.querySelectorAll('*')
+    .forEach((n) => n.remove())
 }
 
 // ui helper functions
