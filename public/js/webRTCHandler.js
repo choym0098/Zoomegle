@@ -24,6 +24,8 @@ export const getLocalPreview = () => {
     navigator.mediaDevices.getUserMedia(defaultConstraints)
     .then((stream) => {
         ui.updateLocalVideo(stream);
+        ui.showVideoCallButtons();
+        store.setCallState(constants.callState.CALL_AVAILABLE);
         store.setLocalStream(stream);
     }).catch((err) => {
         console.log("error occurred while trying to get an access to your camera");
@@ -98,13 +100,16 @@ export const sendPreOffer = (callType, calleePersonalCode) => {
         socketId: calleePersonalCode,
     };
 
-    if (callType === constants.callType.CHAT_PERSONAL_CODE ||
-        callType === constants.callType.VIDEO_PERSONAL_CODE) {
+    if (
+        callType === constants.callType.CHAT_PERSONAL_CODE ||
+        callType === constants.callType.VIDEO_PERSONAL_CODE
+    ) {
         const data = {
             callType,
             calleePersonalCode
         };
         ui.showCallingDialog(callingDialogRejectCallHandler);
+        store.setCallState(constants.callState.CALL_UNAVAILABLE);
         wss.sendPreOffer(data);
     }
 };
@@ -117,6 +122,12 @@ export const handlePreOffer = (data) => {
         callType,
     };
 
+    if (!checkCallPossibility()) {
+        return sendPreOfferAnswer(constants.preOfferAnswer.CALL_UNAVAILABLE);
+    }
+
+    store.setCallState(constants.callState.CALL_UNAVAILABLE);
+
     if (callType === constants.callType.CHAT_PERSONAL_CODE || 
         callType === constants.callType.VIDEO_PERSONAL_CODE)
     {
@@ -127,7 +138,7 @@ export const handlePreOffer = (data) => {
 const acceptCallHandler = () => {
     console.log('call accepted');
     createPeerConnection();
-    sendPreOfferAnswer(CALL_ACCEPTED);
+    sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
     ui.showCallElements(connectedUserDetails.callType);
 }
 
@@ -155,14 +166,17 @@ export const handlePreOfferAnswer = (data) => {
 
     if (preOfferAnswer === constants.preOfferAnswer.CALLEE_NOT_FOUND) {
         ui.showInfoDialog(preOfferAnswer);
+        setIncomingCallsAvailable();
     }
 
     if (preOfferAnswer === constants.preOfferAnswer.CALL_UNAVAILABLE) {
         ui.showInfoDialog(preOfferAnswer);
+        setIncomingCallsAvailable();
     }
 
     if (preOfferAnswer === constants.preOfferAnswer.CALL_REJECTED) {
         ui.showInfoDialog(preOfferAnswer);
+        setIncomingCallsAvailable();
     }
 
     if (preOfferAnswer === constants.preOfferAnswer.CALL_ACCEPTED) {
@@ -258,5 +272,67 @@ export const switchBetweenCameraAndScreenSharing = async (screenSharingActive) =
                 'error occurred while trying to get screen sharing stream', err
             )
         }
+    }
+}
+
+// hang up
+
+export const handleHangUp = () => {
+    console.log('hanging pu the call');
+    const data = {
+        connectedUserSocketId: connectedUserDetails.socketId
+    }
+
+    wss.sendUserHangUp(data);
+    closePeerConnectionAndResetState();
+}
+
+export const handleConnectedUserHangedUp = () => {
+    console.log('connected peer hanged up');
+    closePeerConnectionAndResetState();
+}
+
+const closePeerConnectionAndResetState = () => {
+    if (peerConnection) {
+        peerConnection.close();
+        peerConnection = null;
+    }
+
+    // active mic and camera
+    if (connectedUserDetails.callType === constants.callType.VIDEO_PERSONAL_CODE || 
+        connectedUserDetails.callType === constants.callType.VIDEO_STRANGER) {
+        store.getState().localStream.getVideoTracks()[0].enabled = true;
+        store.getState().localStream.getAudioTracks()[0].enabled = true;
+    }
+
+    ui.updateUIAfterHangUp(connectedUserDetails.callType);
+    setIncomingCallsAvailable();
+    connectedUserDetails = null;
+}
+
+const checkCallPossibility = (callType) => {
+    const callState = store.getState().callState;
+
+    if (callState === constants.callState.CALL_AVAILABLE) {
+        return true;
+    }
+
+    if (
+        (callType === constants.callType.VIDEO_PERSONAL_CODE ||
+        callType === constants.callType.VIDEO_STRANGER) &&
+        callState === constants.callState.CALL_AVAILABLE_ONLY_CHAT
+    ) {
+        return false;
+    }
+
+    return false;
+}
+
+const setIncomingCallsAvailable = () => {
+    const localStream = store.getState().localStream;
+    if (localStream) {
+        store.setCallState(constants.callState.CALL_AVAILABLE);
+    } else {
+        store.setCallState(constants.callState.CALL_AVAILABLE_ONLY_CHAT);
     }
 }

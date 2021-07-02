@@ -13,7 +13,8 @@ npm install
 - Turning on/off volume
 - Turning on/off video
 - Screen sharing
-- Recording
+- Recording video call
+- Guranteed one-to-one connection
 
 ## Running the application
 For now, the app only runs on localhost.
@@ -31,3 +32,6 @@ OR
 ## TODO
 Currently working on a feature that allows connection from strangers + deployment of the application.
 
+
+## Resources
+Logo is created from https://www.canva.com/

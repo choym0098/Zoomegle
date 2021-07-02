@@ -1,5 +1,6 @@
 import * as constants from "./constants.js";
 import * as elements from "./elements.js";
+import * as store from './store.js';
 
 export const updatePersonalCode = (personalCode) => {
     const personalCodeParagraph = document.getElementById('personal_code_paragraph');
@@ -13,6 +14,14 @@ export const updateLocalVideo = (stream) => {
     localVideo.addEventListener('loadedmetadata', () => {
         localVideo.play();
     })
+}
+
+export const showVideoCallButtons = () => {
+    const personalCodeVideoButton = document.getElementById('personal_code_video_button');
+    const strangerVideoButton = document.getElementById('stranger_video_button');
+
+    showElement(personalCodeVideoButton);
+    showElement(strangerVideoButton);
 }
 
 export const updateRemoteVideo = (stream) => {
@@ -110,7 +119,10 @@ const showVideoCallElements = () => {
 
     const remoteVideo = document.getElementById('remote_video');
     showElement(remoteVideo);
-    showChatCallElements();
+    
+    const newMessage = document.getElementById('new_message');
+    showElement(newMessage);
+    
     // block panel
     disableDashboard();
 }
@@ -145,8 +157,72 @@ export const appendMessage = (message, right = false) => {
 
 export const clearMessenger = () => {
     const messageContainer = document.getElementById('messages_container');
-    messagesContainer.querySelectorAll('*')
+    messageContainer.querySelectorAll('*')
     .forEach((n) => n.remove())
+}
+
+// recording
+export const showRecordingPanel = () => {
+    const recordingButtons = document.getElementById('video_recording_buttons');
+    showElement(recordingButtons);
+
+    // hide start recording button if it is active
+    const startRecordingButton = document.getElementById('start_recording_button');
+    hideElement(startRecordingButton)
+}
+
+export const resetRecordingButtons = () => {
+    const startRecordingButton = document.getElementById('start_recording_button');
+    const recordingButtons = document.getElementById('video_recording_buttons');
+
+    hideElement(recordingButtons);
+    showElement(startRecordingButton);
+}
+
+export const switchRecordingButtons = (switchForResumeButton = false) => {
+    const resumeButton = document.getElementById('resume_recording_button');
+    const pauseButton = document.getElementById('pause_recording_button');
+
+    if (switchForResumeButton) {
+        hideElement(pauseButton);
+        showElement(resumeButton);
+    } else {
+        hideElement(resumeButton);
+        showElement(pauseButton);
+    }
+}
+
+// ui after hanged up
+
+export const updateUIAfterHangUp = (callType) => {
+    enableDashboard();
+
+    // hide the call buttons
+    if (callType === constants.callType.VIDEO_PERSONAL_CODE || 
+        callType === constants.callType.VIDEO_STRANGER) 
+    {
+        const callButtons = document.getElementById('call_buttons');
+        hideElement(callButtons);
+    } else {
+        const chatCallButtons = document.getElementById('finish_chat_button_container');
+        hideElement(chatCallButtons);
+    }
+
+    const newMessageInput = document.getElementById('new_message');
+    hideElement(newMessageInput);
+    clearMessenger();
+
+    updateMicButton(false);
+    updateCameraButton(false);
+
+    // hide remote video and show placeholder
+    const remoteVideo = document.getElementById('remote_video');
+    hideElement(remoteVideo);
+
+    const placeholder = document.getElementById('video_placeholder');
+    showElement(placeholder);
+
+    removeAllDialogs();
 }
 
 // ui helper functions
