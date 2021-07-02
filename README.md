@@ -7,6 +7,14 @@ Download all dependencies by running
 npm install
 ```
 
+## Supported features
+- Sending messages
+- Video call via personal code
+- Turning on/off volume
+- Turning on/off video
+- Screen sharing
+- Recording
+
 ## Running the application
 For now, the app only runs on localhost.
 1) Start the server by
