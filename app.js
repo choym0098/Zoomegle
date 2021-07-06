@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http');
+const { connect } = require('http2');
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
 })
 
 let connectedPeers = [];
+let connectedPeersStrangers = [];
 
 io.on('connection', (socket) => {
     connectedPeers.push(socket.id);
@@ -78,6 +80,21 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on('stranger-connection-status', (data) => {
+        const { status } = data;
+        
+        if (status) {
+            connectedPeersStrangers.push(socket.id);
+        } else {
+            const newConnectedPeersStrangers = connectedPeersStrangers.filter(peerSocketId => {
+                return peerSocketId !== socket.id
+            })
+            
+            connectedPeersStrangers = newConnectedPeersStrangers;
+        }
+        console.log(connectedPeersStrangers);
+    })
+
     socket.on('disconnect', () => {
         console.log("user disconnected");
 
@@ -86,7 +103,6 @@ io.on('connection', (socket) => {
         });
 
         connectedPeers = newConnectedPeers;
-        console.log("connected peers : ", connectedPeers);
     });
 });
 
