@@ -40,6 +40,7 @@ personalCodeVideoButton.addEventListener('click', () => {
     webRTCHandler.sendPreOffer(callType, calleePersonalCode);
 });
 
+
 // event listeners for video call buttons
 
 const micButton = document.getElementById('mic_button');
