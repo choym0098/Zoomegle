@@ -51,6 +51,18 @@ export const showCallingDialog = (rejectCallHandler) => {
     dialog.appendChild(callingDialog);
 }
 
+export const showNoStrangerAvailableDialog = () => {
+    const infoDialog = elements.getInfoDialog('No Stranger available', 'Please try again later');
+    if (infoDialog) {
+        const dialog = document.getElementById('dialog');
+        dialog.appendChild(infoDialog);
+        
+        setTimeout(() => {
+            removeAllDialogs();
+        }, [3000]);
+    }
+}
+
 export const showInfoDialog = (preOfferAnswer) => {
     let infoDialog = null;
 
@@ -81,7 +93,7 @@ export const showInfoDialog = (preOfferAnswer) => {
         
         setTimeout(() => {
             removeAllDialogs();
-        }, [4000]);
+        }, [3000]);
     }
 }
 
