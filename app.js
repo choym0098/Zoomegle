@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const { connect } = require('http2');
 
 const PORT = process.env.PORT || 3000;
 
@@ -26,7 +25,7 @@ io.on('connection', (socket) => {
         const connectedPeer = connectedPeers.find((peerSocketId) => {
             return peerSocketId === calleePersonalCode
         });
-
+        console.log("preoffer data : ", data)
         if (connectedPeer) {
             const data = {
                 callerSocketId: socket.id,
@@ -86,13 +85,37 @@ io.on('connection', (socket) => {
         if (status) {
             connectedPeersStrangers.push(socket.id);
         } else {
-            const newConnectedPeersStrangers = connectedPeersStrangers.filter(peerSocketId => {
+            const newConnectedPeersStrangers = connectedPeersStrangers.filter((peerSocketId) => {
                 return peerSocketId !== socket.id
             })
             
             connectedPeersStrangers = newConnectedPeersStrangers;
         }
         console.log(connectedPeersStrangers);
+    })
+
+    socket.on('get-stranger-socket-id', () => {
+        let randomStrangerSocketId;
+        const filteredConnectedPeersStrangers = connectedPeersStrangers.filter((peerSocketId) => {
+            return peerSocketId !== socket.id
+        })
+
+        // grab a randon connected user id
+        if (filteredConnectedPeersStrangers.length > 0) {
+            randomStrangerSocketId = filteredConnectedPeersStrangers[
+                Math.floor(Math.random() * filteredConnectedPeersStrangers.length)
+            ]
+        } else {
+            randomStrangerSocketId = null;
+        }
+
+        const data = {
+            randomStrangerSocketId
+        };
+
+        console.log("randomStrangerSocketId : ", data)
+
+        io.to(socket.id).emit('stranger-socket-id', data);
     })
 
     socket.on('disconnect', () => {
@@ -103,6 +126,11 @@ io.on('connection', (socket) => {
         });
 
         connectedPeers = newConnectedPeers;
+
+        const newConnectedPeersStrangers = connectedPeersStrangers.filter((peerSocketId) => {
+            return peerSocketId != socket.id
+        })
+        connectedPeersStrangers = newConnectedPeersStrangers;
     });
 });
 

@@ -2,6 +2,7 @@ import * as store from './store.js'
 import * as ui from './ui.js'
 import * as webRTCHandler from './webRTCHandler.js'
 import * as constants from './constants.js'
+import * as strangerUtils from './strangerUtils.js'
 
 let socketIO = null;
 
@@ -42,6 +43,10 @@ export const registerSocketEvents = (socket) => {
                 return;
         }
     });
+    
+    socket.on('stranger-socket-id', (data) => {
+        strangerUtils.connectWithStranger(data)
+    })
 };
 
 export const sendPreOffer = (data) => {
@@ -49,6 +54,7 @@ export const sendPreOffer = (data) => {
 };
 
 export const sendPreOfferAnswer = (data) => {
+    console.log("sendPreOfferAnswer wss : ", data)
     socketIO.emit('pre-offer-answer', data);
 }
 
@@ -62,4 +68,8 @@ export const sendUserHangUp = (data) => {
 
 export const changeStrangerConnectionStatus = (data) => {
     socketIO.emit('stranger-connection-status', data);
+}
+
+export const getStrangerSocketId = () => {
+    socketIO.emit('get-stranger-socket-id')
 }

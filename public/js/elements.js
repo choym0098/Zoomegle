@@ -96,6 +96,8 @@ export const getCallingDialog = (rejectCallHandler) => {
 }
 
 export const getInfoDialog = (dialogTitle, dialogDescription) => {
+    console.log("title : ", dialogTitle)
+    
     console.log('getting incoming call dialog');
     const dialog = document.createElement('div');
     dialog.classList.add('dialog_wrapper');

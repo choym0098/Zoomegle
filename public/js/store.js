@@ -27,6 +27,7 @@ export const setLocalStream = (stream) => {
 
 export const setAllowConnectionsFromStrangers = (allowConnection) => {
     state = {
+        ...state,
         allowConnectionsFromStrangers: allowConnection
     }
 }
@@ -53,6 +54,7 @@ export const setRemoteStream = (stream) => {
 }
 
 export const setCallState = (callState) => {
+    console.log("Call state : ", callState)
     state = {
         ...state,
         callState,
