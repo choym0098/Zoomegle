@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
         const connectedPeer = connectedPeers.find((peerSocketId) => {
             return peerSocketId === calleePersonalCode
         });
-        console.log("preoffer data : ", data)
+        
         if (connectedPeer) {
             const data = {
                 callerSocketId: socket.id,
@@ -55,8 +55,7 @@ io.on('connection', (socket) => {
 
     socket.on('pre-offer-answer', (data) => {
         const { callerSocketId } = data;
-        console.log('pre offer answer came');
-        console.log(data);
+    
 
         const connectedPeer = connectedPeers.find((peerSocketId) => 
             peerSocketId === callerSocketId
@@ -91,7 +90,7 @@ io.on('connection', (socket) => {
             
             connectedPeersStrangers = newConnectedPeersStrangers;
         }
-        console.log(connectedPeersStrangers);
+        
     })
 
     socket.on('get-stranger-socket-id', () => {
@@ -113,14 +112,10 @@ io.on('connection', (socket) => {
             randomStrangerSocketId
         };
 
-        console.log("randomStrangerSocketId : ", data)
-
         io.to(socket.id).emit('stranger-socket-id', data);
     })
 
     socket.on('disconnect', () => {
-        console.log("user disconnected");
-
         const newConnectedPeers = connectedPeers.filter((peerSocketId) => {
             return peerSocketId !== socket.id;
         });

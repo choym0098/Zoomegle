@@ -15,7 +15,6 @@ export const setSocketId = (socketId) => {
         ...state,
         socketId: socketId
     };
-    console.log(state);
 };
 
 export const setLocalStream = (stream) => {
@@ -54,7 +53,6 @@ export const setRemoteStream = (stream) => {
 }
 
 export const setCallState = (callState) => {
-    console.log("Call state : ", callState)
     state = {
         ...state,
         callState,
