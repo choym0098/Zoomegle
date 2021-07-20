@@ -1,5 +1,5 @@
 # Meet-Strangers
-A full stack project that allows users to video call or chat with friends of yours or with strangers. The project is built on JavaScript/CSS and WebRTC framework.
+A full stack project that allows users to video call or chat with friends of yours or with strangers. The project is built on JavaScript/CSS, WebRTC framework and SocketIO.
 
 ## Installation
 Download all dependencies by running
