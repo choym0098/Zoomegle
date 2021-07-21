@@ -30,8 +30,11 @@ OR
 5) Screen sharing feature is also available, which you might want to check out once the connection is established between the browsers.
 
 ## TODO
-Currently working on a feature that allows connection from strangers + deployment of the application.
+Currently working on fixing image not found bugs and figuring out which STUN server to use (Twilio probably)
 
+## Deployment
+The website is deployed via Heroku.
+Link to Zoomegle : https://zoomegle-ca.herokuapp.com/
 
 ## Resources
 Logo is created from https://www.canva.com/
