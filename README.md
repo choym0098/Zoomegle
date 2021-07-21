@@ -14,7 +14,7 @@ npm install
 - Turning on/off video
 - Screen sharing
 - Recording video call
-- Chat/VideoCall with strangers
+- Random Chat/VideoCall with strangers
 
 ## Running the application
 For now, the app only runs on localhost.
