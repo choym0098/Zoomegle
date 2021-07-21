@@ -29,12 +29,16 @@ OR
 4) Click either "Chat" or "Video Call" depneding on your need.
 5) Screen sharing feature is also available, which you might want to check out once the connection is established between the browsers.
 
-## TODO
-Currently working on fixing image not found bugs and figuring out which STUN server to use (Twilio probably)
-
 ## Deployment
 The website is deployed via Heroku.
 Link to Zoomegle : https://zoomegle-ca.herokuapp.com/
+
+## In Progress
+Currently working on fixing image not found bugs and figuring out which STUN server to use (Twilio probably)
+
+## TO DO
+Add a group call feature
+Improve UI
 
 ## Resources
 Logo is created from https://www.canva.com/
