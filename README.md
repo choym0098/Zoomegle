@@ -30,7 +30,7 @@ OR
 5) Screen sharing feature is also available, which you might want to check out once the connection is established between the browsers.
 
 ## Deployment
-- The website is deployed via Heroku.
+- The website is deployed via Heroku.\\n
   Link to Zoomegle : https://zoomegle-ca.herokuapp.com/
 
 ## In Progress
