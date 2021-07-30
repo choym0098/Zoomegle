@@ -17,7 +17,7 @@ npm install
 - Random Chat/VideoCall with strangers
 
 ## Running the application
-For now, the app only runs on localhost.
+
 1) Start the server by
 ```
 npm start
