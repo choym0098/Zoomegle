@@ -37,7 +37,7 @@ OR
 - Link to Zoomegle : https://zoomegle-ca.herokuapp.com/
 
 ## In Progress
-Currently working on fixing image not found bugs and figuring out which STUN server to use (Twilio probably)
+Currently working on figuring out which STUN server to use (Twilio probably)
 
 ## TO DO
 - Add a group call feature
