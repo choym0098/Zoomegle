@@ -1,6 +1,5 @@
 # Zoomegle
 The word Zoomegle is coined to describe both "Zoom" and "Omegle". It is a full stack project that allows users to video call or chat with friends of yours or with strangers. The project is built on JavaScript/CSS, WebRTC framework and SocketIO.
-https://vimeo.com/584291399
 
 ## Installation
 Download all dependencies by running
